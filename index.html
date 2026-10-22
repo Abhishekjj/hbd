@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#141852" />
+
+  <title>Happy Birthday to You! 🎉🎂</title>
+  <meta name="title" content="Happy Birthday to You" />
+  <meta name="description" content="A special interactive digital birthday card surprise for you!" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Canvas Confetti Overlay -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Sound Mute/Toggle Button (Available during music) -->
+  <button id="audio-toggle" class="audio-control hidden" aria-label="Toggle Audio">🔊</button>
+
+  <!-- SCENE 1: DARK ROOM -->
+  <div class="scene darkroom" id="scene-darkroom">
+    <div class="text-group">
+      <p class="scene-text bb-text">Hey!</p>
+      <p class="scene-text bb-text">Why is it so dark in here?</p>
+      <p class="scene-text bb-text"><span class="recipient-name">Friend</span>! Can you please switch on the lights?</p>
+    </div>
+  </div>
+
+  <!-- SCENE 2: EMPTY ROOM -->
+  <div class="scene empty-room hidden" id="scene-emptyroom">
+    <div class="text-group">
+      <p class="scene-text room-text">Ok! Why is it so empty here?</p>
+      <p class="scene-text room-text">You know what, let's step outside.</p>
+      <p class="scene-text room-text">Let's see if anyone's out there...</p>
+    </div>
+  </div>
+
+  <!-- SCENE 3: HALLWAY -->
+  <div class="scene hallway hidden" id="scene-hallway">
+    <div class="text-group">
+      <p class="scene-text hall-text">Hey!</p>
+      <p class="scene-text hall-text">Maybe it's a bit late to move in the hallway...</p>
+      <p class="scene-text hall-text">Things are getting creepy here...</p>
+      <p class="scene-text hall-text">I think we should go back inside quickly!</p>
+    </div>
+  </div>
+
+  <!-- SCENE 4: GIFT ROOM -->
+  <div class="scene giftroom hidden" id="scene-giftroom">
+    <div class="text-group">
+      <p class="scene-text gift-text">Phew! That was spooky.</p>
+      <p class="scene-text gift-text">Wait... look! There's a gift box for you!</p>
+      <p class="scene-text gift-text">C'mon, click to open it and see what's inside!</p>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE ACTION BUTTON -->
+  <div class="interactive-btn-container">
+    <button class="action-btn switch-btn hidden" id="action-btn" aria-label="Action Button"></button>
+    <p class="btn-ref hidden" id="btn-ref">Click the Light Bulb.</p>
+  </div>
+
+  <!-- FLASH OVERLAY -->
+  <div class="flash-overlay hidden" id="flash-overlay"></div>
+
+  <!-- SCENE 5: BIRTHDAY CELEBRATION -->
+  <div class="scene celebration hidden" id="scene-celebration">
+    <!-- Hanging Bunting Flags -->
+    <div class="flag-decor flag--left"></div>
+    <div class="flag-decor flag--right"></div>
+
+    <!-- Floating Balloons -->
+    <div class="balloon-decor balloon--left"></div>
+    <div class="balloon-decor balloon--right"></div>
+
+    <!-- Scroll Message Letter -->
+    <div class="scroll-frame hidden" id="scroll-frame">
+      <div class="parchment-scroll">
+        <div class="scroll-inner" id="scroll-content">
+          <h2>Dear <span class="recipient-name">Friend</span>,</h2>
+          <p id="scroll-message-text">
+            On this special day, I wish you all the happiness, joy, and success in the world! 
+            May this year bring you endless laughter, unforgettable moments, and every dream you're chasing.
+            <br /><br />
+            Thank you for being such an incredible presence in our lives. Keep shining bright! ✨
+          </p>
+        </div>
+        <button id="skip-scroll-btn" class="skip-btn">View Card ➡️</button>
+      </div>
+    </div>
+
+    <!-- Main Birthday Card Frame -->
+    <div class="card-frame" id="card-frame">
+      <div class="photo-container">
+        <!-- Birthday Party Cap -->
+        <div class="party-cap">
+          <svg viewBox="0 0 100 120" class="cap-svg">
+            <polygon points="50,5 92,105 8,105" fill="#ff4081" />
+            <polygon points="50,5 65,105 35,105" fill="#ffd700" />
+            <circle cx="50" cy="5" r="7" fill="#00e5ff" />
+            <line x1="15" y1="95" x2="85" y2="95" stroke="#ffffff" stroke-width="4" stroke-dasharray="6,4" />
+            <line x1="25" y1="75" x2="75" y2="75" stroke="#ffffff" stroke-width="4" stroke-dasharray="6,4" />
+            <line x1="35" y1="50" x2="65" y2="50" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,3" />
+          </svg>
+        </div>
+
+        <!-- Recipient's Profile Picture -->
+        <div class="avatar-ring">
+          <img id="recipient-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Birthday Person" />
+        </div>
+
+        <!-- Birthday Cake with Animated Candles -->
+        <div class="cake-box">
+          <div class="candles" id="candles-container">
+            <div class="candle c-1"><div class="flame"></div></div>
+            <div class="candle c-2"><div class="flame"></div></div>
+            <div class="candle c-3"><div class="flame"></div></div>
+            <div class="candle c-4"><div class="flame"></div></div>
+            <div class="candle c-5"><div class="flame"></div></div>
+          </div>
+          <div class="cake-frosting"></div>
+          <div class="cake-top"></div>
+          <div class="cake-middle"></div>
+          <div class="cake-bottom"></div>
+        </div>
+      </div>
+
+      <!-- Birthday Greetings -->
+      <div class="greeting-box">
+        <h1 class="hbd-title">🎉 Happy Birthday! 🎉</h1>
+        <h2 class="nickname-title" id="recipient-nickname">Buddy ⭐</h2>
+        <p class="custom-msg" id="custom-hbd-msg">Wishing you a year filled with love, laughter, and endless blessings!</p>
+
+        <!-- Interactive Actions -->
+        <div class="card-controls">
+          <button id="blow-candles-btn" class="card-btn">🎂 Blow Candles</button>
+          <button id="confetti-btn" class="card-btn">🎊 More Confetti</button>
+          <button id="replay-btn" class="card-btn">🔄 Replay Story</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Elements with Built-in Fallbacks -->
+  <audio id="audio-switch" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+  <audio id="audio-door" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1487/1487-preview.mp3"></audio>
+  <audio id="audio-haunt" preload="auto" loop src="https://assets.mixkit.co/active_storage/sfx/250/250-preview.mp3"></audio>
+  <audio id="audio-blast" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1699/1699-preview.mp3"></audio>
+  <audio id="audio-hbd" preload="auto" loop src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-guitar-chords-487.mp3"></audio>
+
+  <!-- Config and Application Logic -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
